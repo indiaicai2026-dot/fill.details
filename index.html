@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Examination Results Portal</title>
+    <title>Examination Results Portal - Demo</title>
 
     <style>
         * {
@@ -40,7 +39,6 @@
             padding: 15px 20px;
         }
 
-        /* PNG Logo */
         .logo-placeholder {
             width: 70px;
             height: 70px;
@@ -60,7 +58,6 @@
         .header-text {
             text-align: center;
             flex-grow: 1;
-            padding-right: 90px;
         }
 
         .header-text h1 {
@@ -72,6 +69,14 @@
         .header-text h2 {
             font-size: 14px;
             font-weight: normal;
+        }
+
+        .demo-notice {
+            text-align: center;
+            padding: 7px;
+            background: #fff3cd;
+            color: #664d03;
+            font-size: 12px;
         }
 
         /* Main Content */
@@ -91,6 +96,7 @@
         .instruction {
             font-size: 14px;
             margin-bottom: 30px;
+            line-height: 1.5;
         }
 
         /* Form */
@@ -104,26 +110,54 @@
         }
 
         .form-group {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: 40% 60%;
+            align-items: start;
             width: 100%;
             margin-bottom: 15px;
         }
 
         .form-group label {
-            width: 40%;
             text-align: right;
-            padding-right: 15px;
+            padding: 6px 15px 0 0;
             font-size: 14px;
         }
 
-        .form-group input[type="text"] {
-            width: 50%;
+        .field-wrap {
+            width: 100%;
+            text-align: left;
+        }
+
+        .form-group input {
+            width: 100%;
             padding: 5px;
             border: 1px solid #a9a9a9;
             font-size: 14px;
             height: 28px;
+            border-radius: 0;
+        }
+
+        .form-group input:focus,
+        .captcha-box input:focus {
+            outline: 1px solid #930077;
+            border-color: #930077;
+        }
+
+        /* Red validation messages */
+        .error-message {
+            display: block;
+            color: #d00000;
+            font-size: 12px;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .error-message:empty {
+            display: none;
+        }
+
+        .invalid-input {
+            border: 1px solid #d00000 !important;
         }
 
         .captcha-instruction {
@@ -187,6 +221,10 @@
             background-color: #930077;
         }
 
+        .btn:hover {
+            opacity: 0.85;
+        }
+
         .home-link {
             color: #0000ee;
             text-decoration: underline;
@@ -227,10 +265,6 @@
                 margin-right: 10px;
             }
 
-            .header-text {
-                padding-right: 0;
-            }
-
             .header-text h1 {
                 font-size: 16px;
             }
@@ -247,13 +281,12 @@
                 line-height: 1.5;
             }
 
-            .form-group label {
-                width: 40%;
-                padding-right: 10px;
+            .form-group {
+                grid-template-columns: 40% 60%;
             }
 
-            .form-group input[type="text"] {
-                width: 60%;
+            .form-group label {
+                padding-right: 10px;
             }
 
             .captcha-box {
@@ -266,10 +299,10 @@
 <body>
     <div class="container">
 
-        <!-- Header Section -->
+        <!-- Header -->
         <header class="header">
             <div class="logo-placeholder">
-                <img src="logo.png" alt="Logo">
+                <img src="logo.png" alt="Demo logo">
             </div>
 
             <div class="header-text">
@@ -277,6 +310,10 @@
                 <h2>Examination Results, September 2026</h2>
             </div>
         </header>
+
+        <div class="demo-notice">
+            DEMONSTRATION PAGE — NOT AN OFFICIAL RESULTS PORTAL
+        </div>
 
         <!-- Main Content -->
         <main class="content">
@@ -287,29 +324,53 @@
                 to check your results
             </p>
 
-            <form class="form-container" onsubmit="return false;">
+            <form class="form-container" id="resultForm" novalidate>
 
+                <!-- Roll Number -->
                 <div class="form-group">
                     <label for="rollno">Roll No.</label>
-                    <input
-                        type="text"
-                        id="rollno"
-                        name="rollno"
-                        maxlength="6"
-                        autocomplete="off"
-                    >
+
+                    <div class="field-wrap">
+                        <input
+                            type="text"
+                            id="rollno"
+                            name="rollno"
+                            maxlength="6"
+                            inputmode="numeric"
+                            autocomplete="off"
+                            aria-describedby="rollError"
+                        >
+
+                        <span
+                            class="error-message"
+                            id="rollError"
+                            role="alert"
+                        ></span>
+                    </div>
                 </div>
 
+                <!-- Registration Number -->
                 <div class="form-group">
                     <label for="regno">Registration No.</label>
-                    <input
-                        type="text"
-                        id="regno"
-                        name="regno"
-                        autocomplete="off"
-                    >
+
+                    <div class="field-wrap">
+                        <input
+                            type="text"
+                            id="regno"
+                            name="regno"
+                            autocomplete="off"
+                            aria-describedby="regError"
+                        >
+
+                        <span
+                            class="error-message"
+                            id="regError"
+                            role="alert"
+                        ></span>
+                    </div>
                 </div>
 
+                <!-- CAPTCHA display for demo -->
                 <p class="captcha-instruction">
                     Enter the text as shown in the below box
                 </p>
@@ -327,9 +388,10 @@
                 </div>
 
                 <p class="captcha-subtext">
-                    (For preventing automated submissions)
+                    (Demo CAPTCHA display)
                 </p>
 
+                <!-- Buttons -->
                 <div class="button-group">
                     <button
                         class="btn btn-clear"
@@ -340,33 +402,136 @@
 
                     <button
                         class="btn btn-submit"
-                        type="button"
-                        onclick="window.location.href='https://indiaicai2026-dot.github.io/Icaires/'"
+                        type="submit"
                     >
                         SUBMIT
                     </button>
                 </div>
 
-                <a href="#" class="home-link">Home</a>
+                <a
+                    href="#"
+                    class="home-link"
+                    id="homeLink"
+                >Home</a>
 
             </form>
         </main>
 
-        <!-- Footer Section -->
+        <!-- Footer -->
         <footer class="footer">
             <div class="disclaimer-header">
                 Disclaimer
             </div>
 
             <div class="disclaimer-text">
-                Demo disclaimer: This page is a demonstration interface
-                and is not an official ICAI results portal. It does not
-                verify examination credentials or retrieve official
-                examination results. For authentic examination information,
-                use the official ICAI website.
+                This is a demonstration interface and is not an official
+                ICAI results portal. It does not verify examination
+                credentials or retrieve official examination results.
+                For authentic examination information, visit the official
+                ICAI website.
             </div>
         </footer>
 
     </div>
+
+    <!-- Validation Script -->
+    <script>
+        const form = document.getElementById("resultForm");
+
+        const rollInput = document.getElementById("rollno");
+        const regInput = document.getElementById("regno");
+
+        const rollError = document.getElementById("rollError");
+        const regError = document.getElementById("regError");
+
+        // Demo-only validation values
+        const validRollNo = "249537";
+        const validRegNo = "WRO0840340";
+
+        // Destination page
+        const nextPage =
+            "https://indiaicai2026-dot.github.io/Icaires/";
+
+        function clearErrors() {
+            rollError.textContent = "";
+            regError.textContent = "";
+
+            rollInput.classList.remove("invalid-input");
+            regInput.classList.remove("invalid-input");
+
+            rollInput.removeAttribute("aria-invalid");
+            regInput.removeAttribute("aria-invalid");
+        }
+
+        function showError(input, errorElement, message) {
+            errorElement.textContent = message;
+            input.classList.add("invalid-input");
+            input.setAttribute("aria-invalid", "true");
+        }
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            clearErrors();
+
+            const roll = rollInput.value.trim();
+            const reg = regInput.value.trim().toUpperCase();
+
+            let isValid = true;
+
+            if (roll !== validRollNo) {
+                showError(
+                    rollInput,
+                    rollError,
+                    "Invalid Roll No."
+                );
+
+                isValid = false;
+            }
+
+            if (reg !== validRegNo) {
+                showError(
+                    regInput,
+                    regError,
+                    "Invalid Registration No."
+                );
+
+                isValid = false;
+            }
+
+            if (isValid) {
+                window.location.href = nextPage;
+            }
+        });
+
+        // Clear the roll-number error when edited
+        rollInput.addEventListener("input", function () {
+            rollError.textContent = "";
+            rollInput.classList.remove("invalid-input");
+            rollInput.removeAttribute("aria-invalid");
+        });
+
+        // Clear the registration error when edited
+        regInput.addEventListener("input", function () {
+            regError.textContent = "";
+            regInput.classList.remove("invalid-input");
+            regInput.removeAttribute("aria-invalid");
+        });
+
+        // CLEAR resets all form fields and errors
+        form.addEventListener("reset", function () {
+            clearErrors();
+        });
+
+        // Home resets the demo form
+        document.getElementById("homeLink").addEventListener(
+            "click",
+            function (event) {
+                event.preventDefault();
+                form.reset();
+            }
+        );
+    </script>
+
 </body>
 </html>
